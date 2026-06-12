@@ -1,0 +1,44 @@
+{
+  "name": "ruflo",
+  "version": "3.10.41",
+  "description": "Multi-agent orchestration for Codex with swarms, memory, and Ruflo MCP tools.",
+  "author": {
+    "name": "RuvNet",
+    "email": "ruv@ruv.io",
+    "url": "https://ruv.io"
+  },
+  "homepage": "https://github.com/ruvnet/claude-flow#readme",
+  "repository": "https://github.com/ruvnet/claude-flow",
+  "license": "MIT",
+  "keywords": [
+    "ruflo",
+    "codex",
+    "mcp",
+    "multi-agent",
+    "workflow",
+    "developer-tools"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Ruflo",
+    "shortDescription": "Run Ruflo swarms and memory tools inside Codex.",
+    "longDescription": "Ruflo adds multi-agent orchestration, persistent memory, and MCP-powered developer workflows to Codex.",
+    "developerName": "RuvNet",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Tools",
+      "Automation"
+    ],
+    "websiteURL": "https://github.com/ruvnet/claude-flow",
+    "privacyPolicyURL": "https://ruv.io",
+    "termsOfServiceURL": "https://ruv.io",
+    "brandColor": "#412991",
+    "defaultPrompt": [
+      "Set up Ruflo for this workspace.",
+      "Use Ruflo tools to coordinate a coding swarm.",
+      "Help me explore Ruflo memory and orchestration features."
+    ]
+  }
+}
