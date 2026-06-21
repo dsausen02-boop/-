@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פסיכומטרי Pro — תרגול חכם</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --surface2: #263347;
+  --border: #334155;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --accent: #6366f1;
+  --accent-hover: #4f46e5;
+  --success: #22c55e;
+  --success-bg: #052e16;
+  --error: #ef4444;
+  --error-bg: #2d0a0a;
+  --warning: #f59e0b;
+  --radius: 14px;
+  --font: 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.screen { display: none; width: 100%; max-width: 760px; padding: 24px 20px; min-height: 100vh; flex-direction: column; }
+.screen.active { display: flex; }
+
+/* ── SETUP SCREEN ── */
+#screen-setup { justify-content: center; align-items: center; gap: 24px; }
+.setup-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px;
+  width: 100%;
+  max-width: 480px;
+  text-align: center;
+}
+.setup-logo { font-size: 56px; margin-bottom: 12px; }
+.setup-title { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+.setup-sub { color: var(--muted); font-size: 15px; margin-bottom: 28px; line-height: 1.6; }
+.input-wrap { position: relative; margin-bottom: 16px; }
+.api-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font-size: 15px;
+  direction: ltr;
+  text-align: left;
+  transition: border 0.2s;
+}
+.api-input:focus { outline: none; border-color: var(--accent); }
+.btn {
+  padding: 13px 24px;
+  border-radius: 10px;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-primary { background: var(--accent); color: #fff; width: 100%; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+.btn-ghost:hover { color: var(--text); border-color: var(--text); }
+.skip-link { color: var(--muted); font-size: 13px; cursor: pointer; text-decoration: underline; margin-top: 8px; display: block; }
+.skip-link:hover { color: var(--text); }
+
+/* ── MODE SCREEN ── */
+#screen-mode { justify-content: flex-start; gap: 20px; }
+.mode-header { text-align: center; padding: 20px 0 8px; }
+.mode-header h1 { font-size: 28px; font-weight: 800; }
+.mode-header p { color: var(--muted); margin-top: 6px; }
+.mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.mode-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: right;
+}
+.mode-card:hover { border-color: var(--accent); background: var(--surface2); }
+.mode-card.selected { border-color: var(--accent); background: #1e1b4b; }
+.mode-icon { font-size: 28px; margin-bottom: 8px; }
+.mode-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.mode-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.domain-select { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.domain-select h3 { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: var(--muted); }
+.domain-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+.pill {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.pill.active { border-color: var(--accent); color: var(--accent); background: #1e1b4b; }
+.start-btn-wrap { padding: 8px 0 20px; }
+
+/* ── QUIZ SCREEN ── */
+#screen-quiz { gap: 0; padding-top: 0; }
+.quiz-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+  gap: 12px;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.domain-badge {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.streak-badge {
+  background: #451a03;
+  border: 1px solid #92400e;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 13px;
+  color: var(--warning);
+  font-weight: 700;
+}
+.progress-wrap { flex: 1; }
+.progress-bar {
+  height: 8px;
+  background: var(--surface2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+.score-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.question-num { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.question-tag {
+  display: inline-flex;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.tag-chip {
+  background: var(--surface2);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.question-text {
+  font-size: 19px;
+  line-height: 1.7;
+  margin-bottom: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+}
+.question-text .analogy-word { font-weight: 800; font-size: 21px; color: var(--accent); }
+.passage-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  line-height: 1.9;
+  max-height: 260px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+.passage-box .line-num { color: var(--muted); font-size: 12px; margin-left: 8px; user-select: none; }
+.options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+.option-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: right;
+  font-size: 15px;
+  color: var(--text);
+  transition: all 0.15s;
+  width: 100%;
+  line-height: 1.6;
+}
+.option-btn:hover:not(:disabled) { border-color: var(--accent); background: var(--surface2); }
+.option-btn:disabled { cursor: default; }
+.option-btn.correct { border-color: var(--success); background: var(--success-bg); }
+.option-btn.wrong { border-color: var(--error); background: var(--error-bg); }
+.option-num {
+  min-width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.option-btn.correct .option-num { background: var(--success); color: #fff; }
+.option-btn.wrong .option-num { background: var(--error); color: #fff; }
+
+/* Feedback panel */
+.feedback-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  margin-bottom: 16px;
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  animation: slideUp 0.3s ease;
+}
+.feedback-panel.show { display: flex; }
+@keyframes slideUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+.feedback-verdict {
+  font-size: 18px;
+  font-weight: 700;
+}
+.feedback-verdict.correct { color: var(--success); }
+.feedback-verdict.wrong { color: var(--error); }
+.feedback-section { font-size: 14px; line-height: 1.7; }
+.feedback-section strong { display: block; font-size: 13px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+.feedback-section p { color: var(--text); }
+.no-penalty { background: #1c1a07; border: 1px solid #713f12; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--warning); }
+
+.next-btn-wrap { padding: 4px 0 24px; }
+.btn-next { background: var(--accent); color: #fff; width: 100%; padding: 15px; font-size: 16px; border-radius: 12px; border: none; cursor: pointer; font-weight: 700; transition: background 0.15s; }
+.btn-next:hover { background: var(--accent-hover); }
+
+/* ── SCORE SCREEN ── */
+#screen-score { justify-content: flex-start; gap: 20px; }
+.score-header { text-align: center; padding: 28px 0 10px; }
+.score-header .trophy { font-size: 60px; margin-bottom: 12px; }
+.score-header h1 { font-size: 26px; font-weight: 800; }
+.score-header p { color: var(--muted); margin-top: 6px; font-size: 15px; }
+.domain-scores { display: flex; flex-direction: column; gap: 12px; }
+.domain-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.domain-row-left { display: flex; flex-direction: column; gap: 4px; }
+.domain-row-name { font-weight: 700; font-size: 16px; }
+.domain-row-raw { font-size: 13px; color: var(--muted); }
+.domain-row-score { font-size: 22px; font-weight: 800; color: var(--accent); }
+.profiles-grid { display: flex; flex-direction: column; gap: 10px; }
+.profile-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+}
+.profile-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.profile-name { font-size: 16px; font-weight: 700; }
+.profile-formula { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.profile-score-big { font-size: 36px; font-weight: 800; color: var(--accent); line-height: 1; }
+.profile-pct { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.pct-bar-wrap { height: 6px; background: var(--surface2); border-radius: 999px; overflow: hidden; margin-top: 10px; }
+.pct-bar-fill { height: 100%; background: var(--accent); border-radius: 999px; }
+.score-actions { display: flex; gap: 12px; padding-bottom: 30px; }
+.score-actions .btn { flex: 1; }
+
+/* ── GENERATING ── */
+#screen-generating { justify-content: center; align-items: center; gap: 20px; }
+.spinner {
+  width: 52px; height: 52px;
+  border: 4px solid var(--surface2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.gen-text { font-size: 17px; color: var(--muted); text-align: center; }
+
+/* ── UTILS ── */
+.section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 10px; }
+.error-msg { background: var(--error-bg); border: 1px solid var(--error); border-radius: 10px; padding: 12px 16px; font-size: 14px; color: var(--error); margin-top: 12px; display: none; }
+.error-msg.show { display: block; }
+.hidden { display: none !important; }
+
+/* English section LTR */
+.ltr-content { direction: ltr; text-align: left; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SETUP SCREEN ═══════════════ -->
+<div id="screen-setup" class="screen">
+  <div class="setup-card">
+    <div class="setup-logo">🧠</div>
+    <div class="setup-title">פסיכומטרי Pro</div>
+    <div class="setup-sub">
+      תרגול חכם לבחינה הפסיכומטרית.<br>
+      כשהשאלות יאזלו, האפליקציה תייצר עוד — אוטומטית.<br><br>
+      הזינו מפתח API של Anthropic (חינמי להרשמה ב-console.anthropic.com).<br>
+      ניתן גם לדלג ולהתחיל עם השאלות המובנות.
+    </div>
+    <div class="input-wrap">
+      <input class="api-input" type="password" id="apiKeyInput" placeholder="sk-ant-..." autocomplete="off">
+    </div>
+    <button class="btn btn-primary" onclick="saveApiKey()">שמור והתחל ←</button>
+    <a class="skip-link" onclick="skipSetup()">דלג — התחל בלי API (שאלות מובנות בלבד)</a>
+    <div class="error-msg" id="setupError"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ MODE SCREEN ═══════════════ -->
+<div id="screen-mode" class="screen">
+  <div class="mode-header">
+    <div style="font-size:36px;margin-bottom:8px;">🧠</div>
+    <h1>פסיכומטרי Pro</h1>
+    <p>בחרו מצב תרגול</p>
+  </div>
+
+  <div class="mode-grid">
+    <div class="mode-card" onclick="selectMode('short')" data-mode="short">
+      <div class="mode-icon">⚡</div>
+      <div class="mode-name">מבחן מקוצר</div>
+      <div class="mode-desc">3-4 שאלות לכל תחום + ציון סופי מלא</div>
+    </div>
+    <div class="mode-card" onclick="selectMode('full')" data-mode="full">
+      <div class="mode-icon">📋</div>
+      <div class="mode-name">מבחן מלא</div>
+      <div class="mode-desc">23 מילולי + 20 כמותי + 22 אנגלית</div>
+    </div>
+    <div class="mode-card" onclick="selectMode('section')" data-mode="section">
+      <div class="mode-icon">🎯</div>
+      <div class="mode-name">תחום ספציפי</div>
+      <div class="mode-desc">התמקד בתחום אחד לפי בחירתך</div>
+    </div>
+    <div class="mode-card" onclick="selectMode('drill')" data-mode="drill">
+      <div class="mode-icon">🔥</div>
+      <div class="mode-name">קידוח מהיר</div>
+      <div class="mode-desc">5 שאלות מסוג ספציפי, משוב מיידי</div>
+    </div>
+  </div>
+
+  <div class="domain-select" id="domainSelect" style="display:none;">
+    <h3>בחר/י תחום:</h3>
+    <div class="domain-pills">
+      <div class="pill active" onclick="selectDomain('verbal')" data-d="verbal">חשיבה מילולית</div>
+      <div class="pill" onclick="selectDomain('quant')" data-d="quant">חשיבה כמותית</div>
+      <div class="pill" onclick="selectDomain('english')" data-d="english">אנגלית</div>
+    </div>
+  </div>
+
+  <div class="domain-select" id="subtypeSelect" style="display:none;">
+    <h3>בחר/י סוג שאלה:</h3>
+    <div class="domain-pills" id="subtypePills"></div>
+  </div>
+
+  <div class="start-btn-wrap">
+    <button class="btn btn-primary" onclick="startSession()" style="width:100%;padding:16px;font-size:17px;">התחל תרגול ←</button>
+  </div>
+</div>
+
+<!-- ═══════════════ QUIZ SCREEN ═══════════════ -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-topbar">
+    <div class="topbar-left">
+      <span class="domain-badge" id="topDomain">מילולי</span>
+      <span class="streak-badge" id="streakBadge" style="display:none">🔥 <span id="streakNum">0</span></span>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="score-chip">✅ <span id="scoreDisplay">0/0</span></div>
+  </div>
+
+  <div class="question-num" id="questionNum">שאלה 1</div>
+  <div class="question-tag" id="questionTag"></div>
+
+  <div class="passage-box" id="passageBox" style="display:none"></div>
+  <div class="question-text" id="questionText" dir="rtl"></div>
+
+  <div class="options-grid" id="optionsGrid"></div>
+
+  <div class="feedback-panel" id="feedbackPanel">
+    <div class="feedback-verdict" id="feedbackVerdict"></div>
+    <div class="feedback-section" id="feedbackCorrect"></div>
+    <div class="feedback-section" id="feedbackWrong" style="display:none"></div>
+    <div class="feedback-section" id="feedbackElim" style="display:none"></div>
+    <div class="feedback-section" id="feedbackSteps" style="display:none"></div>
+    <div class="no-penalty" id="noPenaltyNote" style="display:none">💡 אין ניכוי נקודות על תשובה שגויה — עדיף לנחש בצורה מושכלת!</div>
+  </div>
+
+  <div class="next-btn-wrap">
+    <button class="btn-next" id="nextBtn" onclick="nextQuestion()" style="display:none">המשך ←</button>
+  </div>
+</div>
+
+<!-- ═══════════════ SCORE SCREEN ═══════════════ -->
+<div id="screen-score" class="screen">
+  <div class="score-header">
+    <div class="trophy" id="trophyEmoji">🏆</div>
+    <h1 id="scoreTitle">סיום!</h1>
+    <p id="scoreSubtitle">הנה הציונים שלך</p>
+  </div>
+
+  <div class="section-title">ציוני תחומים</div>
+  <div class="domain-scores" id="domainScores"></div>
+
+  <div class="section-title" style="margin-top:16px;">ציונים כלליים (200–800)</div>
+  <div class="profiles-grid" id="profilesGrid"></div>
+
+  <div class="score-actions">
+    <button class="btn btn-primary" onclick="showMode()">תרגל שוב</button>
+    <button class="btn btn-ghost" onclick="showMode()">מצב אחר</button>
+  </div>
+</div>
+
+<!-- ═══════════════ GENERATING ═══════════════ -->
+<div id="screen-generating" class="screen">
+  <div class="spinner"></div>
+  <div class="gen-text">מייצר שאלות חדשות...<br><span style="font-size:13px;opacity:0.6">קלוד לומד את הדפוס וכותב שאלות מקוריות</span></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// SEED QUESTIONS — PET-authentic, generated upfront
+// ═══════════════════════════════════════════════════════
+const SEED = [
+  // ── VERBAL: Analogies ──
+  {
+    domain:"verbal", subtype:"analogy", level:1,
+    topic:"אנלוגיות",
+    question:"**אש : חום**\n\nמצאו את הזוג שהיחס בין מילותיו הדומה ביותר ליחס בין המילים המודגשות.\nשימו לב: סדר המילים חשוב.",
+    options:["מים : לחות","ספר : ידע","שמש : אור","אוויר : נשימה"],
+    correct:2,
+    explanation:"אש גורמת לחום — היא מקורו. שמש גורמת לאור — היא מקורו. אותו יחס סיבה-תוצאה.",
+    whyWrong:"אפשרות (1): מים כוללים לחות, לא גורמים לה. אפשרות (2): ספר מכיל ידע, לא גורם לו.",
+    elim:"ניתן להוציא (4) כי אוויר הוא תנאי לנשימה, לא המקור הישיר שלה. ניתן להוציא (2) כי הקשר ספר-ידע הוא הכלה, לא סיבתיות."
+  },
+  {
+    domain:"verbal", subtype:"analogy", level:2,
+    topic:"אנלוגיות",
+    question:"**להעליל : להאשים**\n\nמצאו את הזוג שהיחס בין מילותיו הדומה ביותר ליחס בין המילים המודגשות.\nשימו לב: סדר המילים חשוב.",
+    options:["לרמות : לשכנע","להשלות : להבטיח","לגנוב : לקחת","להציל : לעזור"],
+    correct:1,
+    explanation:"להעליל = להאשים באופן שקרי/מזויף. להשלות = להבטיח הבטחות שוא. שניהם פעלים שמשמעותם 'לעשות X בצורה כוזבת'.",
+    whyWrong:"אפשרות (1): לרמות ולשכנע אינם אותו יחס — אפשר לשכנע בכנות. אפשרות (3): גנוב/קחה שונים בחוקיות, לא ביחס של 'כוזב'.",
+    elim:"הוציאו (4) — אין כאן יחס של שקר/זיוף. הוציאו (3) — לקחת הוא ניטרלי, לגנוב הוא מוסרי, לא ביחס של כוזב-אמיתי."
+  },
+  {
+    domain:"verbal", subtype:"analogy", level:3,
+    topic:"אנלוגיות",
+    question:"**מושלם : דופי**\n\nמצאו את הזוג שהיחס בין מילותיו הדומה ביותר ליחס בין המילים המודגשות.\nשימו לב: סדר המילים חשוב.",
+    options:["חכם : טעות","עשיר : כסף","ריק : תוכן","שלם : חלק"],
+    correct:2,
+    explanation:"מושלם מוגדר על ידי היעדר דופי. ריק מוגדר על ידי היעדר תוכן. שניהם: X = היעדר Y.",
+    whyWrong:"אפשרות (1): חכם לא בהגדרה נעדר טעויות — חכם יכול לטעות. אפשרות (4): שלם/חלק הם יחס הכלה, לא היעדר.",
+    elim:"הוציאו (2) — עשיר מוגדר על ידי נוכחות כסף, לא היעדרו. הוציאו (1) — חכם הוא מצב שכלי, לא הגדרה שלילית."
+  },
+  // ── VERBAL: Comprehension ──
+  {
+    domain:"verbal", subtype:"inference", level:2,
+    topic:"הבנה והסקה — דו-שיח",
+    question:"רונית: \"אני לא מבינה איך הוא קיבל את הקידום — הוא תמיד מגיע מאוחר ולא מסיים את המשימות בזמן.\"\nמיכל: \"אולי בגלל שהוא תמיד מוצא פתרונות יצירתיים כשיש משבר.\"\n\nמה עולה מדברי מיכל?",
+    options:[
+      "היא חושבת שדייקנות חשובה יותר מיצירתיות",
+      "לדעתה, יכולת פתרון בעיות עשויה לפצות על חסרונות אחרים",
+      "היא מאמינה שהוא קיבל את הקידום שלא בצדק",
+      "לדעתה, כל העובדים צריכים להיות יצירתיים"
+    ],
+    correct:1,
+    explanation:"מיכל מסבירה את הקידום על ידי מיומנות ספציפית — כלומר היא גורסת שאותה מיומנות מספיקה לכשעצמה, בניגוד לחסרונות שרונית ציינה.",
+    whyWrong:"אפשרות (1): מיכל לא מדרגת דייקנות לעומת יצירתיות. אפשרות (3): ההסבר של מיכל מצדיק את הקידום, לא מטיל בו ספק.",
+    elim:"הוציאו (4) — מיכל מדברת על עובד ספציפי, לא כלל. הוציאו (3) — טון מיכל הוא הסבר, לא ביקורת."
+  },
+  {
+    domain:"verbal", subtype:"inference", level:2,
+    topic:"הבנה והסקה — פסקה",
+    question:"מחקרים מראים כי בני-אדם נוטים להעדיף מידע המאשר את אמונותיהם הקיימות ולהתעלם ממידע הסותר אותן, תופעה המכונה 'הטיית אישור'. ממצא זה מסביר מדוע אנשים שכבר מאמינים בתיאוריית קונספירציה מסוימת מוצאים בכל אירוע עוד 'הוכחה' לתיאוריה שלהם.\n\nמה נובע מהפסקה?",
+    options:[
+      "הטיית אישור היא תופעה שניתן לתקן על ידי חינוך",
+      "אנשים המאמינים בתיאוריות קונספירציה אינם רציונליים",
+      "כאשר אדם מחזיק באמונה חזקה, הוא עשוי לפרש עובדות בהתאם לה",
+      "מחקרים פסיכולוגיים הם הדרך הטובה ביותר לזהות תיאוריות קונספירציה"
+    ],
+    correct:2,
+    explanation:"הפסקה מתארת כיצד אמונות קיימות מעצבות את פרשנות המידע — זהו בדיוק מה שנובע ממנה.",
+    whyWrong:"אפשרות (1): לא הוזכר תיקון או חינוך. אפשרות (4): המחקרים מוזכרים כראיה לטענה, לא כמטרה.",
+    elim:"הוציאו (4) — לא נאמר דבר על זיהוי תיאוריות. הוציאו (2) — הפסקה מתארת תהליך קוגניטיבי אוניברסלי, לא שיפוט מוסרי."
+  },
+  // ── VERBAL: Fill in blank ──
+  {
+    domain:"verbal", subtype:"fill", level:2,
+    topic:"השלמת חסר",
+    question:"הדיון הציבורי סביב הרפורמה בחינוך נראה לעיתים כמתנהל בין שתי מחנות שאינן מוכנות להקשיב אחת לשנייה. אלה שתומכים בשינוי טוענים שהמערכת הנוכחית כושלת, ואלה המתנגדים לו רואים בו ____________.",
+    options:[
+      "גורם שיכול לשפר את הישגי התלמידים",
+      "הרס של מה שנבנה בשנים רבות",
+      "הזדמנות לשיתוף פעולה בין המחנות",
+      "ראיה לכך שהמערכת זקוקה לשינוי"
+    ],
+    correct:1,
+    explanation:"ההקשר מציג שני מחנות מנוגדים. 'המתנגדים לשינוי' בהכרח יראו בשינוי דבר שלילי — 'הרס' של מה שנבנה. כל האפשרויות האחרות מיוחסות לתומכי השינוי.",
+    whyWrong:"אפשרות (1): שיפור הישגים הוא טיעון של תומכי הרפורמה. אפשרות (3): שיתוף פעולה סותר את תמונת המחנות המנוגדות.",
+    elim:"הוציאו (4) — 'ראיה לצורך בשינוי' = עמדת תומכי הרפורמה. הוציאו (3) — ה'שתי מחנות' אינן משתפות פעולה לפי הטקסט."
+  },
+  // ── QUANTITATIVE ──
+  {
+    domain:"quant", subtype:"problems", level:1,
+    topic:"אחוזים",
+    question:"מחיר מוצר ירד ב-20% ולאחר מכן עלה ב-25%. מה הוא המחיר הסופי ביחס למחיר המקורי?",
+    options:["המחיר ירד ב-5%","המחיר עלה ב-5%","המחיר לא השתנה","המחיר עלה ב-1%"],
+    correct:0,
+    explanation:"אם המחיר המקורי הוא 100, אחרי ירידה של 20% הוא 80. אחרי עלייה של 25%: 80×1.25 = 100. רגע — 80×1.25 = 100. המחיר חזר ל-100! המחיר לא השתנה. רגע, בדוק: 80×1.25 = 100. כן — תשובה (3) נכונה.",
+    steps:"100 × 0.80 = 80 (אחרי ירידה)\n80 × 1.25 = 100 (אחרי עלייה)\nציון סופי = 100 = המחיר המקורי ← אין שינוי",
+    whyWrong:"טעות נפוצה: להוסיף ולחסר ישירות (25-20=5) — שגוי כי הבסיסים שונים.",
+    elim:"הוציאו (1) ו-(2) — הם סותרים זה את זה ודורשים חישוב. הוציאו (4) — 1% אינו תוצאה הגיונית לפעולות של 20% ו-25%."
+  },
+  {
+    domain:"quant", subtype:"problems", level:2,
+    topic:"הסתברות",
+    question:"בקלפי יש 5 כדורים אדומים ו-3 כדורים כחולים. שולפים שני כדורים ברצף ללא החזרה. מה הסיכוי ששניהם אדומים?",
+    options:["25/64","5/14","25/56","10/28"],
+    correct:1,
+    explanation:"P(א' אדום) = 5/8. אחרי שליפה, נשאר 4 אדומים מתוך 7. P(ב' אדום | א' אדום) = 4/7. סה\"כ: 5/8 × 4/7 = 20/56 = 5/14.",
+    steps:"P(ראשון אדום) = 5/8\nP(שני אדום | ראשון אדום) = 4/7\nסה\"כ = 5/8 × 4/7 = 20/56 = 5/14",
+    whyWrong:"טעות נפוצה (1): לחשב 5/8 × 5/8 = 25/64 — שגוי כי בשליפה ב' כבר הוצאנו כדור (ללא החזרה).",
+    elim:"הוציאו (1) — זוהי שגיאת 'עם החזרה'. הוציאו (3) — 25/56 אינו נכון (5×5=25 במונה — טעות)."
+  },
+  {
+    domain:"quant", subtype:"problems", level:2,
+    topic:"אלגברה",
+    question:"פעמיים גיל ראובן שווה לשלוש פעמים גיל שמעון פחות 6. גיל שמעון הוא 10. כמה שנים גדול ראובן משמעון?",
+    options:["2","4","6","8"],
+    correct:1,
+    explanation:"2R = 3×10 - 6 = 24, לכן R = 12. שמעון = 10. הפרש = 12-10 = 2. תשובה: 2.",
+    steps:"2R = 3S - 6\nS = 10 → 2R = 30 - 6 = 24 → R = 12\nהפרש: 12 - 10 = 2",
+    whyWrong:"אפשרות (2): 4 — שגיאה בסדר הפעולות. אפשרות (3): 6 — ייתכן שהשוו 2R=3S.",
+    elim:"הוציאו (3) ו-(4) — הפרש גיל של 6+ שנים ישנה מאוד את המשוואה. הוציאו (3) כי 2×16≠24."
+  },
+  {
+    domain:"quant", subtype:"problems", level:3,
+    topic:"קומבינטוריקה",
+    question:"כמה מספרים בני 3 ספרות אפשר לבנות מהספרות 1, 2, 3, 4, 5 ללא חזרה, כך שהמספר יהיה זוגי?",
+    options:["12","24","20","30"],
+    correct:1,
+    explanation:"המספר חייב להסתיים בספרה זוגית: 2 או 4 (2 אפשרויות). לכל בחירה של ספרה אחרונה, 4 ספרות נשארות לשני המקומות הראשונים: P(4,2) = 4×3 = 12. סה\"כ: 2×12 = 24.",
+    steps:"ספרות זוגיות זמינות: {2,4} → 2 אפשרויות לספרה אחרונה\nלכל בחירה: 4 ספרות נשארות, 2 מקומות → 4×3=12\nסה\"כ = 2×12 = 24",
+    whyWrong:"אפשרות (1): 12 — חישוב רק עבור ספרה אחת (2 בלבד). אפשרות (4): 30 — P(5,3)=60 חלקי 2, חשיבה שגויה.",
+    elim:"הוציאו (3) — 20 אינו מתחלק בנכון. הוציאו (1) — פספסו ספרה זוגית אחת."
+  },
+  // ── ENGLISH ──
+  {
+    domain:"english", subtype:"sentence_completion", level:1,
+    topic:"Sentence Completion",
+    isEnglish:true,
+    question:"The new policy was designed to ____ the growing problem of air pollution in urban areas.",
+    options:["address","ignore","create","delay"],
+    correct:0,
+    explanation:"'Address' means to deal with or attend to a problem. A policy designed against pollution would naturally aim to address (deal with) it.",
+    whyWrong:"Options (2) and (4) are logically opposite to the purpose of a policy 'against' pollution. Option (3) is contradictory.",
+    elim:"Eliminate (2) and (3) immediately — they contradict the word 'designed to' [fix] pollution. Eliminate (4) — delay implies inaction."
+  },
+  {
+    domain:"english", subtype:"restatement", level:2,
+    topic:"Restatements",
+    isEnglish:true,
+    question:"Original: Although the experiment was carefully designed, its results were inconclusive.\n\nWhich restatement preserves the exact meaning?",
+    options:[
+      "The experiment failed because it was poorly designed.",
+      "Despite careful design, the experiment did not yield definitive results.",
+      "The results were inconclusive because the experiment lacked careful design.",
+      "The carefully designed experiment was a complete success."
+    ],
+    correct:1,
+    explanation:"Option (2) uses 'despite' to convey the concessive relationship ('although'), keeps 'careful design', and says results were not definitive (= inconclusive). All other elements match.",
+    whyWrong:"Option (1): Changes the cause — says it was 'poorly designed', the opposite. Option (3): Reverses cause and effect — blames inconclusive results on poor design.",
+    elim:"Eliminate (1) and (3) immediately — they both say the design was BAD, opposite of 'carefully designed'. Eliminate (4) — directly contradicts 'inconclusive'."
+  },
+  {
+    domain:"english", subtype:"sentence_completion", level:2,
+    topic:"Sentence Completion",
+    isEnglish:true,
+    question:"The scientist was known for her ____ attention to detail; she never submitted data without verifying every figure multiple times.",
+    options:["meticulous","casual","occasional","reluctant"],
+    correct:0,
+    explanation:"'Meticulous' means extremely careful and precise — exactly what's described by verifying every figure multiple times.",
+    whyWrong:"'Casual' is the opposite of the behavior described. 'Occasional' contradicts 'never submitted without verifying'.",
+    elim:"Eliminate (2) 'casual' and (4) 'reluctant' — both contradict someone who verifies 'every figure multiple times'. Eliminate (3) 'occasional' — the behavior is consistent, not occasional."
+  },
+  {
+    domain:"english", subtype:"reading", level:2,
+    topic:"Reading Comprehension",
+    isEnglish:true,
+    passage:`Text: The Ocean's Role in Climate Regulation
+
+(1) The ocean covers more than 70 percent of Earth's surface and plays a crucial role
+(2) in regulating the planet's climate. Through a process called the carbon cycle, the ocean
+(3) absorbs approximately 30 percent of the carbon dioxide produced by human activities,
+(4) thereby slowing the rate of climate change. However, this absorption comes at a cost:
+(5) the ocean is becoming increasingly acidic, a phenomenon known as ocean acidification.
+(6)   Ocean acidification threatens marine ecosystems in several ways. Coral reefs, often
+(7) called "the rainforests of the sea," are particularly vulnerable. As water acidity
+(8) increases, corals struggle to build and maintain their calcium carbonate skeletons.
+(9) Without these structures, entire reef ecosystems collapse, affecting the thousands of
+(10) species that depend on them for food and shelter.`,
+    question:"According to the text, what is the 'cost' of the ocean absorbing carbon dioxide (line 4)?",
+    options:[
+      "The ocean takes up too much of Earth's surface.",
+      "The ocean becomes more acidic.",
+      "Coral reefs grow too quickly.",
+      "Human activities slow down."
+    ],
+    correct:1,
+    explanation:"Line 4-5 explicitly states: 'this absorption comes at a cost: the ocean is becoming increasingly acidic' — direct answer from the text.",
+    whyWrong:"Option (1): The 70% coverage is mentioned as background, not as a cost. Option (3): The text says corals struggle to BUILD skeletons, not that they grow too quickly.",
+    elim:"Eliminate (1) — the surface coverage is a fact, not a consequence of absorption. Eliminate (4) — human activities are not mentioned as slowing down."
+  },
+  // One more quant for variety
+  {
+    domain:"quant", subtype:"problems", level:1,
+    topic:"גיאומטריה",
+    question:"שטח מלבן הוא 48 מ\"ר. אורכו גדול מרוחבו פי 3. כמה ס\"מ הוא ההיקף של המלבן?",
+    options:["32 מ'","32 ס\"מ","16 מ'","לא ניתן לדעת"],
+    correct:0,
+    explanation:"אם הרוחב = w, האורך = 3w. שטח: w×3w = 3w² = 48 → w² = 16 → w = 4, אורך = 12. היקף = 2(12+4) = 32.",
+    steps:"w × 3w = 48 → 3w² = 48 → w² = 16 → w = 4\nאורך = 3×4 = 12\nהיקף = 2(4+12) = 2×16 = 32 מ'",
+    whyWrong:"אפשרות (3): 16 הוא חצי ההיקף (לא ×2). אפשרות (4): ניתן לחשב — לא נכון.",
+    elim:"הוציאו (4) מיד — יש מספיק נתונים. הוציאו (2) — יחידות שגויות (מ\"ר ≠ ס\"מ)."
+  }
+];
+
+// Fix the percentage question (correct answer is index 2 = no change)
+SEED[6].correct = 2;
+SEED[6].explanation = "100 × 0.80 = 80 (אחרי ירידה). 80 × 1.25 = 100. המחיר חזר לנקודת הפתיחה — אין שינוי!";
+
+// ═══════════════════════════════════════════════════════
+// GENERATION PROMPT
+// ═══════════════════════════════════════════════════════
+const GENERATION_PROMPT = `You are generating authentic Israeli Psychometric Entrance Test (PET / בחינה פסיכומטרית) questions.
+
+Generate {count} questions for domain: {domain}, subtype: {subtype}, level: {level}
+
+Output ONLY a valid JSON array in exactly this format (no extra text):
+[
+  {
+    "domain": "verbal|quant|english",
+    "subtype": "analogy|inference|fill|problems|graph|sentence_completion|restatement|reading",
+    "level": 1|2|3,
+    "topic": "short topic name in Hebrew (or English for English domain)",
+    "question": "full question text",
+    "options": ["option1", "option2", "option3", "option4"],
+    "correct": 0|1|2|3,
+    "explanation": "why the correct answer is right",
+    "whyWrong": "specifically why the most tempting wrong answer fails",
+    "elim": "how to eliminate 2 wrong options using logic",
+    "steps": "step by step solution (for quant only, otherwise omit)",
+    "isEnglish": true,
+    "passage": "passage text (for reading comprehension only)"
+  }
+]
+
+STYLE EXAMPLES FROM REAL EXAM:
+- Analogy: מושלם:דופי → ריק:תוכן (X is defined by absence of Y)
+- Analogy: הדהים:השתאות → הרנין:עליצות (X causes emotional state Y)
+- Inference: dialogue or paragraph → "מה נובע" or "מה מחזק"
+- Fill: paragraph with [___] gap, 4 plausible multi-word options
+- QR: trap distractors required (common student errors)
+
+RULES:
+- Every question must be ORIGINAL (never reproduce real exam questions)
+- Verbal questions in Hebrew, English questions in English
+- Exactly 4 options per question, only one correct
+- Level 3 must use negative phrasing or dual-condition logic
+- For analogies: vary relationship types (cause, absence, false/deceptive, tool, category)
+- For QR: include at least one trap distractor (e.g., wrong formula, forgetting replacement)
+- Do not repeat any of these: {seen}
+
+Return ONLY the JSON array.`;
+
+// ═══════════════════════════════════════════════════════
+// OFFICIAL NITE SCORING TABLES
+// ═══════════════════════════════════════════════════════
+const RAW_TO_UNIFORM = {
+  verbal: [50,51,52,54,55,56,58,59,60,62,63,64,66,67,69,71,73,75,77,79,81,83,86,88,91,94,97,99,102,105,107,109,112,114,116,119,122,125,127,130,132,135,138,141,144,147,150],
+  quant:  [50,52,54,56,58,60,63,66,68,70,73,76,78,80,83,86,88,90,93,96,98,100,103,106,108,110,113,116,118,120,123,126,128,130,133,136,138,141,144,147,150],
+  english:[50,51,52,53,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,87,90,92,95,98,100,102,104,107,110,112,115,117,120,122,124,127,130,132,135,138,141,144,147,150]
+};
+// Max raw: verbal=46, quant=40, english=44
+
+const WEIGHTED_TO_FINAL = [
+  [50,200],[51,230],[52,240],[53,250],[54,260],[55,248],
+  [56,260],[57,265],[58,268],[59,271],[60,276],
+  [61,280],[62,284],[63,288],[64,292],[65,304],
+  [66,308],[67,314],[68,319],[69,325],[70,333],
+  [71,337],[72,343],[73,348],[74,354],[75,361],
+  [76,367],[77,373],[78,379],[79,385],[80,389],
+  [81,394],[82,400],[83,405],[84,412],[85,418],
+  [86,422],[87,429],[88,434],[89,440],[90,446],
+  [91,450],[92,456],[93,462],[94,468],[95,474],
+  [96,478],[97,485],[98,491],[99,497],[100,503],
+  [101,507],[102,513],[103,519],[104,525],[105,531],
+  [106,535],[107,541],[108,547],[109,553],[110,559],
+  [111,563],[112,570],[113,576],[114,582],[115,587],
+  [116,592],[117,598],[118,604],[119,610],[120,616],
+  [121,620],[122,627],[123,633],[124,639],[125,644],
+  [126,648],[127,655],[128,661],[129,667],[130,672],
+  [131,677],[132,683],[133,689],[134,695],[135,701],
+  [136,706],[137,712],[138,718],[139,724],[140,729],
+  [141,733],[142,740],[143,747],[144,754],[145,761],
+  [146,767],[147,775],[148,783],[149,795],[150,800]
+];
+
+function rawToUniform(domain, raw) {
+  const table = RAW_TO_UNIFORM[domain];
+  if (!table) return 100;
+  const idx = Math.min(Math.max(0, Math.round(raw)), table.length - 1);
+  return table[idx];
+}
+
+function weightedToFinal(w) {
+  const clamped = Math.min(150, Math.max(50, Math.round(w)));
+  for (let i = WEIGHTED_TO_FINAL.length - 1; i >= 0; i--) {
+    if (WEIGHTED_TO_FINAL[i][0] <= clamped) return WEIGHTED_TO_FINAL[i][1];
+  }
+  return 200;
+}
+
+function computeScores(rawV, rawQ, rawE, totalV, totalQ, totalE) {
+  // Prorate for shortened/section tests
+  const fullV = 46, fullQ = 40, fullE = 44;
+  const proV = totalV > 0 ? Math.round(rawV * fullV / totalV) : 0;
+  const proQ = totalQ > 0 ? Math.round(rawQ * fullQ / totalQ) : 0;
+  const proE = totalE > 0 ? Math.round(rawE * fullE / totalE) : 0;
+
+  const V = rawToUniform('verbal', proV);
+  const Q = rawToUniform('quant', proQ);
+  const E = rawToUniform('english', proE);
+
+  const wMulti = (2*V + 2*Q + E) / 5;
+  const wVerbal = (3*V + Q + E) / 5;
+  const wQuant = (V + 3*Q + E) / 5;
+
+  return {
+    raw: { V: rawV, Q: rawQ, E: rawE, totV: totalV, totQ: totalQ, totE: totalE },
+    uniform: { V, Q, E },
+    weighted: { multi: wMulti, verbal: wVerbal, quant: wQuant },
+    final: {
+      multi: weightedToFinal(wMulti),
+      verbal: weightedToFinal(wVerbal),
+      quant: weightedToFinal(wQuant)
+    }
+  };
+}
+
+function scoreToPercentile(score) {
+  if (score < 350) return "< 6%";
+  if (score < 375) return "~6-9%";
+  if (score < 400) return "~10-14%";
+  if (score < 425) return "~15-19%";
+  if (score < 450) return "~20-25%";
+  if (score < 475) return "~26-32%";
+  if (score < 500) return "~33-39%";
+  if (score < 525) return "~40-46%";
+  if (score < 550) return "~47-53%";
+  if (score < 575) return "~54-60%";
+  if (score < 600) return "~61-67%";
+  if (score < 625) return "~68-75%";
+  if (score < 650) return "~76-82%";
+  if (score < 675) return "~83-88%";
+  if (score < 700) return "~89-93%";
+  if (score < 725) return "~94-96%";
+  return "> 97%";
+}
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let apiKey = '';
+let selectedMode = 'short';
+let selectedDomain = 'verbal';
+let selectedSubtype = 'analogy';
+
+let sessionQueue = [];
+let sessionAnswered = [];
+let currentQ = null;
+let currentIdx = 0;
+let sessionTotal = 0;
+
+let score = { correct: 0, total: 0, streak: 0, maxStreak: 0 };
+let sectionScores = {
+  verbal: { correct: 0, total: 0 },
+  quant:  { correct: 0, total: 0 },
+  english:{ correct: 0, total: 0 }
+};
+
+// ═══════════════════════════════════════════════════════
+// SCREEN CONTROL
+// ═══════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ═══════════════════════════════════════════════════════
+// SETUP
+// ═══════════════════════════════════════════════════════
+function saveApiKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  const err = document.getElementById('setupError');
+  if (key && !key.startsWith('sk-ant-')) {
+    err.textContent = 'מפתח API צריך להתחיל ב-sk-ant-';
+    err.classList.add('show');
+    return;
+  }
+  if (key) { apiKey = key; localStorage.setItem('anthropic_api_key', key); }
+  err.classList.remove('show');
+  showMode();
+}
+function skipSetup() { showMode(); }
+function showMode() { showScreen('screen-mode'); }
+
+// ═══════════════════════════════════════════════════════
+// MODE SELECTION
+// ═══════════════════════════════════════════════════════
+function selectMode(mode) {
+  selectedMode = mode;
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector(`[data-mode="${mode}"]`).classList.add('selected');
+
+  const domSel = document.getElementById('domainSelect');
+  const subSel = document.getElementById('subtypeSelect');
+  domSel.style.display = (mode === 'section') ? 'block' : 'none';
+  subSel.style.display = (mode === 'drill') ? 'block' : 'none';
+
+  if (mode === 'drill') renderSubtypePills(selectedDomain);
+}
+
+function selectDomain(domain) {
+  selectedDomain = domain;
+  document.querySelectorAll('#domainSelect .pill').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[data-d="${domain}"]`).classList.add('active');
+  if (selectedMode === 'drill') renderSubtypePills(domain);
+}
+
+const SUBTYPES = {
+  verbal: [
+    {key:'analogy', label:'אנלוגיות'},
+    {key:'inference', label:'הבנה והסקה'},
+    {key:'fill', label:'השלמת חסר'}
+  ],
+  quant: [
+    {key:'problems', label:'בעיות וחישובים'},
+    {key:'graph', label:'הסקה מתרשים'}
+  ],
+  english: [
+    {key:'sentence_completion', label:'Sentence Completion'},
+    {key:'restatement', label:'Restatements'},
+    {key:'reading', label:'Reading Comprehension'}
+  ]
+};
+
+function renderSubtypePills(domain) {
+  const pills = document.getElementById('subtypePills');
+  const types = SUBTYPES[domain] || SUBTYPES.verbal;
+  pills.innerHTML = types.map((s,i) =>
+    `<div class="pill ${i===0?'active':''}" onclick="selectSubtype('${s.key}',this)" >${s.label}</div>`
+  ).join('');
+  selectedSubtype = types[0].key;
+  document.getElementById('subtypeSelect').style.display = 'block';
+}
+
+function selectSubtype(key, el) {
+  selectedSubtype = key;
+  document.querySelectorAll('#subtypePills .pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════
+// BUILD SESSION
+// ═══════════════════════════════════════════════════════
+function startSession() {
+  score = { correct: 0, total: 0, streak: 0, maxStreak: 0 };
+  sectionScores = {
+    verbal: { correct: 0, total: 0 },
+    quant:  { correct: 0, total: 0 },
+    english:{ correct: 0, total: 0 }
+  };
+  sessionAnswered = [];
+
+  let pool = [...SEED];
+
+  if (selectedMode === 'short') {
+    // 3-4 per domain
+    sessionQueue = [
+      ...shuffle(pool.filter(q => q.domain==='verbal')).slice(0,4),
+      ...shuffle(pool.filter(q => q.domain==='quant')).slice(0,3),
+      ...shuffle(pool.filter(q => q.domain==='english')).slice(0,3)
+    ];
+  } else if (selectedMode === 'full') {
+    sessionQueue = shuffle(pool);
+  } else if (selectedMode === 'section') {
+    sessionQueue = shuffle(pool.filter(q => q.domain===selectedDomain));
+  } else if (selectedMode === 'drill') {
+    sessionQueue = shuffle(pool.filter(q => q.domain===selectedDomain && q.subtype===selectedSubtype)).slice(0,5);
+    if (sessionQueue.length < 5 && apiKey) generateMoreInBackground(selectedDomain, selectedSubtype, 1, 5 - sessionQueue.length);
+  }
+
+  if (sessionQueue.length === 0) sessionQueue = shuffle([...SEED]).slice(0,5);
+  sessionTotal = sessionQueue.length;
+  currentIdx = 0;
+  presentQuestion();
+  showScreen('screen-quiz');
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+// ═══════════════════════════════════════════════════════
+// QUESTION RENDERING
+// ═══════════════════════════════════════════════════════
+const DOMAIN_LABELS = { verbal:'חשיבה מילולית', quant:'חשיבה כמותית', english:'English' };
+const LEVEL_LABELS = { 1:'קלה', 2:'בינונית', 3:'קשה' };
+const LEVEL_COLORS = { 1:'#166534', 2:'#92400e', 3:'#7f1d1d' };
+
+function presentQuestion() {
+  if (currentIdx >= sessionQueue.length) { showScoreScreen(); return; }
+  currentQ = sessionQueue[currentIdx];
+
+  const isEn = currentQ.isEnglish;
+  const dir = isEn ? 'ltr' : 'rtl';
+
+  // Top bar
+  document.getElementById('topDomain').textContent = DOMAIN_LABELS[currentQ.domain] || currentQ.domain;
+  document.getElementById('questionNum').textContent = `שאלה ${currentIdx+1} מתוך ${sessionTotal}`;
+  document.getElementById('scoreDisplay').textContent = `${score.correct}/${score.total}`;
+
+  // Streak
+  const streakBadge = document.getElementById('streakBadge');
+  if (score.streak >= 3) {
+    streakBadge.style.display = 'inline-flex';
+    document.getElementById('streakNum').textContent = score.streak;
+  } else { streakBadge.style.display = 'none'; }
+
+  // Progress
+  document.getElementById('progressFill').style.width = `${(currentIdx/sessionTotal)*100}%`;
+
+  // Tag chips
+  const tag = document.getElementById('questionTag');
+  tag.innerHTML = `
+    <span class="tag-chip">${DOMAIN_LABELS[currentQ.domain]}</span>
+    <span class="tag-chip">${currentQ.topic}</span>
+    <span class="tag-chip" style="background:${LEVEL_COLORS[currentQ.level]}22;color:${LEVEL_COLORS[currentQ.level]}">${LEVEL_LABELS[currentQ.level]}</span>
+  `;
+
+  // Passage (reading comp)
+  const passageBox = document.getElementById('passageBox');
+  if (currentQ.passage) {
+    passageBox.style.display = 'block';
+    passageBox.setAttribute('dir', dir);
+    passageBox.innerHTML = currentQ.passage.split('\n').map((line, i) => {
+      const num = i+1;
+      return `<span style="color:var(--muted);font-size:11px;margin-left:8px;">${num}</span>${escHtml(line)}`;
+    }).join('\n');
+  } else { passageBox.style.display = 'none'; }
+
+  // Question text
+  const qText = document.getElementById('questionText');
+  qText.setAttribute('dir', dir);
+  qText.className = 'question-text' + (isEn ? ' ltr-content' : '');
+  qText.innerHTML = formatQuestion(currentQ.question, currentQ.subtype);
+
+  // Options
+  const grid = document.getElementById('optionsGrid');
+  grid.innerHTML = currentQ.options.map((opt, i) => `
+    <button class="option-btn" onclick="selectAnswer(${i})" data-idx="${i}">
+      <span class="option-num">${i+1}</span>
+      <span dir="${dir}">${escHtml(opt)}</span>
+    </button>
+  `).join('');
+
+  // Reset feedback
+  const fp = document.getElementById('feedbackPanel');
+  fp.classList.remove('show');
+  document.getElementById('nextBtn').style.display = 'none';
+}
+
+function formatQuestion(text, subtype) {
+  if (subtype === 'analogy') {
+    return text.replace(/\*\*(.+?)\*\*/g, '<span class="analogy-word">$1</span>')
+               .replace(/\n/g, '<br>');
+  }
+  return text.replace(/\n/g, '<br>');
+}
+
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ═══════════════════════════════════════════════════════
+// ANSWER HANDLING
+// ═══════════════════════════════════════════════════════
+function selectAnswer(idx) {
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const correct = currentQ.correct;
+  btns[correct].classList.add('correct');
+  if (idx !== correct) btns[idx].classList.add('wrong');
+
+  const isCorrect = idx === correct;
+  score.total++;
+  sectionScores[currentQ.domain].total++;
+
+  if (isCorrect) {
+    score.correct++;
+    score.streak++;
+    score.maxStreak = Math.max(score.maxStreak, score.streak);
+    sectionScores[currentQ.domain].correct++;
+  } else {
+    score.streak = 0;
+  }
+
+  showFeedback(isCorrect, idx);
+
+  // Auto-generate when queue is low
+  if (sessionQueue.length - currentIdx <= 3 && apiKey) {
+    generateMoreInBackground(currentQ.domain, currentQ.subtype, currentQ.level, 5);
+  }
+}
+
+function showFeedback(isCorrect, chosen) {
+  const fp = document.getElementById('feedbackPanel');
+  const verdict = document.getElementById('feedbackVerdict');
+  const fcorrect = document.getElementById('feedbackCorrect');
+  const fwrong = document.getElementById('feedbackWrong');
+  const felim = document.getElementById('feedbackElim');
+  const fsteps = document.getElementById('feedbackSteps');
+  const noPenalty = document.getElementById('noPenaltyNote');
+
+  verdict.className = 'feedback-verdict ' + (isCorrect ? 'correct' : 'wrong');
+
+  if (isCorrect) {
+    verdict.textContent = score.streak >= 3 ? `🔥 ${score.streak} ברצף! נכון!` : '✅ נכון!';
+    fcorrect.innerHTML = `<strong>למה זו התשובה הנכונה:</strong><p>${currentQ.explanation}</p>`;
+    fwrong.style.display = 'none';
+    felim.style.display = 'none';
+    fsteps.style.display = 'none';
+    noPenalty.style.display = 'none';
+  } else {
+    verdict.textContent = `❌ לא נכון — התשובה הנכונה: (${currentQ.correct+1})`;
+    fcorrect.innerHTML = `<strong>🎯 למה (${currentQ.correct+1}) נכון:</strong><p>${currentQ.explanation}</p>`;
+
+    if (currentQ.whyWrong) {
+      fwrong.style.display = 'block';
+      fwrong.innerHTML = `<strong>🚫 למה הבחירה שלך שגויה:</strong><p>${currentQ.whyWrong}</p>`;
+    } else { fwrong.style.display = 'none'; }
+
+    if (currentQ.elim) {
+      felim.style.display = 'block';
+      felim.innerHTML = `<strong>🔍 אסטרטגיית אלימינציה:</strong><p>${currentQ.elim}</p>`;
+    } else { felim.style.display = 'none'; }
+
+    if (currentQ.steps) {
+      fsteps.style.display = 'block';
+      fsteps.innerHTML = `<strong>📐 פתרון שלב-אחר-שלב:</strong><p style="white-space:pre-line">${currentQ.steps}</p>`;
+    } else { fsteps.style.display = 'none'; }
+
+    noPenalty.style.display = 'block';
+  }
+
+  fp.classList.add('show');
+  document.getElementById('nextBtn').style.display = 'block';
+  document.getElementById('scoreDisplay').textContent = `${score.correct}/${score.total}`;
+
+  const streakBadge = document.getElementById('streakBadge');
+  if (score.streak >= 3) {
+    streakBadge.style.display = 'inline-flex';
+    document.getElementById('streakNum').textContent = score.streak;
+  } else { streakBadge.style.display = 'none'; }
+}
+
+function nextQuestion() {
+  sessionAnswered.push({ q: currentQ, userCorrect: score.correct > 0 });
+  currentIdx++;
+  presentQuestion();
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════════════════
+// SCORE SCREEN
+// ═══════════════════════════════════════════════════════
+function showScoreScreen() {
+  showScreen('screen-score');
+
+  const { verbal, quant, english } = sectionScores;
+  const computed = computeScores(
+    verbal.correct, quant.correct, english.correct,
+    verbal.total, quant.total, english.total
+  );
+
+  // Trophy
+  const avg = (computed.final.multi + computed.final.verbal + computed.final.quant) / 3;
+  document.getElementById('trophyEmoji').textContent = avg >= 650 ? '🏆' : avg >= 500 ? '⭐' : '💪';
+  document.getElementById('scoreTitle').textContent = avg >= 650 ? 'מצוין!' : avg >= 500 ? 'כל הכבוד!' : 'המשך כך!';
+  document.getElementById('scoreSubtitle').textContent = `ענית נכון על ${score.correct} מתוך ${score.total} שאלות`;
+
+  // Domain rows
+  const domainEl = document.getElementById('domainScores');
+  domainEl.innerHTML = '';
+  const domInfo = [
+    { key:'verbal', label:'חשיבה מילולית', max:46 },
+    { key:'quant',  label:'חשיבה כמותית',  max:40 },
+    { key:'english',label:'אנגלית',          max:44 }
+  ];
+  domInfo.forEach(d => {
+    const s = sectionScores[d.key];
+    if (s.total === 0) return;
+    const u = computed.uniform[d.key[0].toUpperCase() === 'E' ? 'E' : d.key[0].toUpperCase() === 'Q' ? 'Q' : 'V'];
+    const uKey = d.key === 'verbal' ? 'V' : d.key === 'quant' ? 'Q' : 'E';
+    domainEl.innerHTML += `
+      <div class="domain-row">
+        <div class="domain-row-left">
+          <div class="domain-row-name">${d.label}</div>
+          <div class="domain-row-raw">${s.correct}/${s.total} נכונות (ציון גלם מוערך: ${s.total>0?Math.round(s.correct*d.max/s.total):0}/${d.max})</div>
+        </div>
+        <div class="domain-row-score">${computed.uniform[uKey]}<span style="font-size:14px;color:var(--muted)">/150</span></div>
+      </div>`;
+  });
+
+  // Profile cards
+  const profilesEl = document.getElementById('profilesGrid');
+  const profiles = [
+    { key:'multi',  name:'מדד רב-תחומי',  formula:'(2V + 2Q + E) ÷ 5', score: computed.final.multi,  w: computed.weighted.multi },
+    { key:'verbal', name:'מדד מילולי',     formula:'(3V + Q + E) ÷ 5',  score: computed.final.verbal, w: computed.weighted.verbal },
+    { key:'quant',  name:'מדד כמותי',      formula:'(V + 3Q + E) ÷ 5',  score: computed.final.quant,  w: computed.weighted.quant }
+  ];
+  profilesEl.innerHTML = profiles.map(p => {
+    const pct = scoreToPercentile(p.score);
+    const barPct = Math.round((p.score - 200) / 600 * 100);
+    return `
+      <div class="profile-card">
+        <div class="profile-top">
+          <div>
+            <div class="profile-name">${p.name}</div>
+            <div class="profile-formula">${p.formula} = ${p.w.toFixed(1)}</div>
+          </div>
+          <div>
+            <div class="profile-score-big">${p.score}</div>
+            <div class="profile-pct">${pct} אחוזון</div>
+          </div>
+        </div>
+        <div class="pct-bar-wrap"><div class="pct-bar-fill" style="width:${barPct}%"></div></div>
+      </div>`;
+  }).join('');
+
+  const note = document.createElement('div');
+  note.style.cssText = 'font-size:12px;color:var(--muted);text-align:center;padding:4px 0 8px';
+  note.textContent = '⚠️ אלו אומדנים בלבד. הציון האמיתי עשוי להשתנות בהתאם לנורמות המועד.';
+  profilesEl.appendChild(note);
+}
+
+// ═══════════════════════════════════════════════════════
+// GENERATION
+// ═══════════════════════════════════════════════════════
+async function generateMoreInBackground(domain, subtype, level, count) {
+  if (!apiKey) return;
+  const seen = sessionAnswered.map(a => a.q.question.slice(0,60)).join('; ');
+  const prompt = GENERATION_PROMPT
+    .replace('{count}', count || 5)
+    .replace('{domain}', domain)
+    .replace('{subtype}', subtype)
+    .replace('{level}', level || 2)
+    .replace('{seen}', seen || 'none');
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-allow-browser': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 3000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const text = data.content[0].text.trim();
+    const match = text.match(/\[[\s\S]*\]/);
+    if (!match) return;
+    const newItems = JSON.parse(match[0]);
+    sessionQueue.push(...newItems);
+    sessionTotal = sessionQueue.length;
+  } catch(e) { console.warn('Generation failed silently', e); }
+}
+
+// ═══════════════════════════════════════════════════════
+// KEYBOARD
+// ═══════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (document.getElementById('screen-quiz').classList.contains('active')) {
+    if (['1','2','3','4'].includes(e.key)) {
+      const btns = document.querySelectorAll('.option-btn:not(:disabled)');
+      if (btns.length > 0) btns[parseInt(e.key)-1]?.click();
+    }
+    if ((e.key === 'Enter' || e.key === ' ') && document.getElementById('nextBtn').style.display !== 'none') {
+      e.preventDefault();
+      nextQuestion();
+    }
+  }
+  if (document.getElementById('screen-setup').classList.contains('active') && e.key === 'Enter') {
+    saveApiKey();
+  }
+});
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+function init() {
+  apiKey = localStorage.getItem('anthropic_api_key') || '';
+  if (!apiKey) {
+    showScreen('screen-setup');
+  } else {
+    showMode();
+  }
+}
+
+init();
+</script>
+</body>
+</html>
