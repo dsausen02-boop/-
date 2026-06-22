@@ -517,16 +517,14 @@ body {
     </div>
   </div>
 
-  <div class="mode-section">
+  <div class="mode-section" style="margin-top:20px">
     <div class="mode-section-label">משחק</div>
-    <div class="mode-grid">
-      <div class="mode-card" onclick="startGame()" data-mode="game" style="grid-column:1/-1;flex-direction:row;gap:16px;align-items:center;">
-        <div class="mode-icon" style="font-size:32px">🎮</div>
-        <div>
-          <div class="mode-name">טריוויה – 3 חיים</div>
-          <div class="mode-desc">10 שאלות • 30 שניות כל אחת • רמת קושי עולה</div>
-        </div>
-      </div>
+    <div style="margin:0 auto;max-width:100%;display:grid;grid-template-columns:1fr;gap:12px">
+      <button onclick="startGame()" style="background:#fff;border:2px solid var(--rule);border-radius:14px;padding:16px;text-align:center;cursor:pointer;font-family:inherit;font-size:16px;transition:all .15s">
+        <div style="font-size:32px;margin-bottom:8px">🎮</div>
+        <div style="font-weight:700;margin-bottom:4px">טריוויה – 3 חיים</div>
+        <div style="font-size:13px;color:var(--ink-soft)">10 שאלות • 30 שניות כל אחת • רמת קושי עולה</div>
+      </button>
     </div>
   </div>
 
