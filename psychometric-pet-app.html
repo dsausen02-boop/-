@@ -428,6 +428,58 @@ body {
 .btn-outline:hover { border-color: var(--ink); }
 
 .ltr-content { direction: ltr; text-align: left; }
+
+/* ══════ GAME SCREEN ══════ */
+#screen-game { padding: 0; display:flex; flex-direction:column; min-height:100vh; }
+.game-header { background:var(--ink); color:#fff; padding:14px 20px; display:flex; align-items:center; justify-content:space-between; }
+.game-lives { display:flex; gap:6px; font-size:22px; }
+.game-lives .heart { transition: transform .2s, opacity .2s; }
+.game-lives .heart.lost { opacity:.2; transform:scale(.8); }
+.game-level-badge { font-family:'Caveat',cursive; font-size:18px; background:rgba(255,255,255,.15); border-radius:20px; padding:3px 14px; }
+
+/* Timer ring */
+.game-timer-wrap { display:flex; justify-content:center; padding:18px 0 8px; }
+.timer-ring { position:relative; width:76px; height:76px; }
+.timer-ring svg { transform:rotate(-90deg); }
+.timer-ring circle { fill:none; stroke-width:5; }
+.timer-bg { stroke: var(--rule); }
+.timer-arc { stroke: #c47d2e; stroke-linecap:round; transition: stroke-dashoffset .9s linear, stroke .4s; }
+.timer-arc.urgent { stroke: #c0392b; }
+.timer-num { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Caveat',cursive; font-size:26px; font-weight:700; color:var(--ink); }
+.timer-num.urgent { color:#c0392b; }
+
+/* Game question area */
+.game-body { flex:1; padding:0 20px 20px; }
+.game-q-num { text-align:center; font-size:13px; color:var(--ink-soft); margin-bottom:8px; }
+.game-domain-tag { text-align:center; margin-bottom:12px; }
+.game-domain-tag span { font-size:11px; background:var(--paper2); border:1px solid var(--rule); border-radius:20px; padding:2px 10px; color:var(--ink-soft); }
+.game-question { background:#fff; border:1.5px solid var(--rule); border-radius:14px; padding:18px 16px; font-size:16px; line-height:1.6; margin-bottom:14px; min-height:80px; }
+.game-opts { display:flex; flex-direction:column; gap:10px; }
+.game-opt { background:#fff; border:2px solid var(--rule); border-radius:12px; padding:13px 16px; font-size:15px; text-align:right; cursor:pointer; transition:background .15s, border-color .15s, transform .1s; display:flex; align-items:center; gap:10px; }
+.game-opt:hover:not(:disabled) { border-color:#c47d2e; background:var(--paper2); transform:translateX(-2px); }
+.game-opt:disabled { cursor:default; }
+.game-opt.correct { background:#eef7f2; border-color:#2d6a4f; }
+.game-opt.wrong   { background:#fdf0f1; border-color:#c0392b; }
+.game-opt.shake   { animation: shake .35s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 60%{transform:translateX(6px)} }
+.game-opt-num { width:26px; height:26px; border-radius:50%; background:var(--paper2); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--amber); flex-shrink:0; }
+.game-mini-fb { text-align:center; font-family:'Caveat',cursive; font-size:18px; min-height:28px; margin-top:6px; }
+
+/* Game over / win screen */
+.game-over-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; padding:40px 24px; text-align:center; }
+.game-over-emoji { font-size:72px; margin-bottom:16px; animation: pop .4s cubic-bezier(.3,1.5,.5,1); }
+@keyframes pop { from{transform:scale(0)} to{transform:scale(1)} }
+.game-over-title { font-family:'Caveat',cursive; font-size:36px; font-weight:700; margin-bottom:6px; color:var(--ink); }
+.game-over-sub { font-size:15px; color:var(--ink-soft); margin-bottom:24px; }
+.game-over-stats { display:flex; gap:20px; justify-content:center; margin-bottom:30px; }
+.game-stat { background:#fff; border:1.5px solid var(--rule); border-radius:14px; padding:14px 22px; }
+.game-stat-num { font-family:'Caveat',cursive; font-size:32px; font-weight:700; color:var(--amber); }
+.game-stat-label { font-size:12px; color:var(--ink-soft); margin-top:2px; }
+
+/* Level up flash */
+.level-up-flash { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none; z-index:999; }
+.level-up-flash .luf-inner { background:rgba(196,125,46,.92); color:#fff; font-family:'Caveat',cursive; font-size:34px; padding:16px 36px; border-radius:20px; animation:flash-in-out 1.2s forwards; }
+@keyframes flash-in-out { 0%{opacity:0;transform:scale(.7)} 20%{opacity:1;transform:scale(1.05)} 80%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(1)} }
 </style>
 </head>
 <body>
@@ -465,6 +517,19 @@ body {
     </div>
   </div>
 
+  <div class="mode-section">
+    <div class="mode-section-label">משחק</div>
+    <div class="mode-grid">
+      <div class="mode-card" onclick="startGame()" data-mode="game" style="grid-column:1/-1;flex-direction:row;gap:16px;align-items:center;">
+        <div class="mode-icon" style="font-size:32px">🎮</div>
+        <div>
+          <div class="mode-name">טריוויה – 3 חיים</div>
+          <div class="mode-desc">10 שאלות • 30 שניות כל אחת • רמת קושי עולה</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="domain-sel-card" id="domainSelect" style="display:none">
     <h3>בחר תחום</h3>
     <div class="pills">
@@ -481,6 +546,32 @@ body {
 
   <div class="start-wrap">
     <button class="btn-start" onclick="startSession()">התחל תרגול ←</button>
+  </div>
+</div>
+
+<!-- ═══════════ GAME SCREEN ═══════════ -->
+<div id="screen-game" class="screen" style="display:none">
+  <div class="game-header">
+    <div class="game-lives" id="gameLives"></div>
+    <div class="game-level-badge" id="gameLevelBadge">רמה 1</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.7)" id="gameQNum">1/10</div>
+  </div>
+  <div class="game-timer-wrap">
+    <div class="timer-ring">
+      <svg width="76" height="76" viewBox="0 0 76 76">
+        <circle class="timer-bg" cx="38" cy="38" r="33"/>
+        <circle class="timer-arc" id="timerArc" cx="38" cy="38" r="33"
+          stroke-dasharray="207.3" stroke-dashoffset="0"/>
+      </svg>
+      <div class="timer-num" id="timerNum">30</div>
+    </div>
+  </div>
+  <div class="game-body">
+    <div class="game-q-num" id="gameQLabel"></div>
+    <div class="game-domain-tag"><span id="gameDomainTag"></span></div>
+    <div class="game-question" id="gameQuestion" dir="rtl"></div>
+    <div class="game-opts" id="gameOpts"></div>
+    <div class="game-mini-fb" id="gameMiniF"></div>
   </div>
 </div>
 
@@ -1809,6 +1900,210 @@ document.addEventListener('keydown',e=>{
 });
 
 showMode();
+
+// ════════════════════════════════════════
+// TRIVIA GAME
+// ════════════════════════════════════════
+const GAME_TOTAL = 10;
+const GAME_SECS  = 30;
+const GAME_LIVES = 3;
+const CIRCUMF    = 2 * Math.PI * 33; // svg r=33
+
+let gLives, gIdx, gQueue, gTimer, gAnswered, gCorrect;
+
+function buildGameQueue() {
+  const lvl1 = shuffle(SEED.filter(q=>q.level===1));
+  const lvl2 = shuffle(SEED.filter(q=>q.level===2));
+  const lvl3 = shuffle(SEED.filter(q=>q.level===3));
+  // 4 easy → 4 medium → 2 hard
+  return [...lvl1.slice(0,4), ...lvl2.slice(0,4), ...lvl3.slice(0,2)];
+}
+
+function startGame() {
+  gLives   = GAME_LIVES;
+  gIdx     = 0;
+  gCorrect = 0;
+  gQueue   = buildGameQueue();
+  showScreen('screen-game');
+  showGameQuestion();
+}
+
+function showGameQuestion() {
+  if (gIdx >= GAME_TOTAL) { endGame(true); return; }
+
+  const q = gQueue[gIdx];
+  gAnswered = false;
+
+  // header
+  document.getElementById('gameLives').innerHTML =
+    Array.from({length:GAME_LIVES}, (_,i) =>
+      `<span class="heart${i>=gLives?' lost':''}">❤️</span>`).join('');
+  const lvl = q.level===1?'רמה 1 – קלה': q.level===2?'רמה 2 – בינונית':'רמה 3 – קשה';
+  document.getElementById('gameLevelBadge').textContent = lvl;
+  document.getElementById('gameQNum').textContent = `${gIdx+1}/${GAME_TOTAL}`;
+  document.getElementById('gameQLabel').textContent = `שאלה ${gIdx+1} מתוך ${GAME_TOTAL}`;
+
+  const domLabel = {verbal:'חשיבה מילולית',quant:'חשיבה כמותית',english:'English'};
+  document.getElementById('gameDomainTag').textContent = domLabel[q.domain];
+
+  // question text
+  const qEl = document.getElementById('gameQuestion');
+  qEl.setAttribute('dir', q.isEnglish?'ltr':'rtl');
+  qEl.innerHTML = fmtQ(q.question, q.subtype);
+
+  // options
+  document.getElementById('gameOpts').innerHTML = q.options.map((o,i) => `
+    <button class="game-opt" onclick="gamePick(${i})" id="gopt${i}">
+      <span class="game-opt-num">${i+1}</span>
+      <span dir="${q.isEnglish?'ltr':'rtl'}">${esc(o)}</span>
+    </button>`).join('');
+
+  document.getElementById('gameMiniF').textContent = '';
+
+  startTimer(q);
+}
+
+function startTimer(q) {
+  clearInterval(gTimer);
+  let secs = GAME_SECS;
+  const arc = document.getElementById('timerArc');
+  const num = document.getElementById('timerNum');
+  arc.style.transition = 'none';
+  arc.style.strokeDashoffset = '0';
+  arc.classList.remove('urgent');
+  num.classList.remove('urgent');
+  num.textContent = secs;
+
+  // nudge to let the reset paint
+  requestAnimationFrame(()=>{
+    arc.style.transition = `stroke-dashoffset ${GAME_SECS}s linear`;
+    arc.style.strokeDashoffset = CIRCUMF;
+  });
+
+  gTimer = setInterval(()=>{
+    secs--;
+    num.textContent = secs;
+    if (secs <= 8) { arc.classList.add('urgent'); num.classList.add('urgent'); }
+    if (secs <= 0) {
+      clearInterval(gTimer);
+      if (!gAnswered) timeOut();
+    }
+  }, 1000);
+}
+
+function gamePick(idx) {
+  if (gAnswered) return;
+  gAnswered = true;
+  clearInterval(gTimer);
+
+  const q = gQueue[gIdx];
+  const btns = document.querySelectorAll('.game-opt');
+  btns.forEach(b=>b.disabled=true);
+  btns[q.correct].classList.add('correct');
+
+  if (idx === q.correct) {
+    gCorrect++;
+    document.getElementById('gameMiniF').textContent = ['✅ נכון!','🎉 מצוין!','👏 כל הכבוד!','🔥 ממש טוב!'][Math.floor(Math.random()*4)];
+    setTimeout(advanceGame, 900);
+  } else {
+    btns[idx].classList.add('wrong','shake');
+    loseLife('❌ לא נכון — התשובה הנכונה מסומנת');
+  }
+}
+
+function timeOut() {
+  gAnswered = true;
+  const q = gQueue[gIdx];
+  document.querySelectorAll('.game-opt').forEach(b=>b.disabled=true);
+  document.getElementById(`gopt${q.correct}`).classList.add('correct');
+  loseLife('⏰ הזמן נגמר!');
+}
+
+function loseLife(msg) {
+  gLives--;
+  document.getElementById('gameMiniF').textContent = msg;
+  // update hearts
+  document.getElementById('gameLives').innerHTML =
+    Array.from({length:GAME_LIVES}, (_,i) =>
+      `<span class="heart${i>=gLives?' lost':''}">❤️</span>`).join('');
+
+  if (gLives <= 0) {
+    setTimeout(()=>endGame(false), 1100);
+  } else {
+    setTimeout(advanceGame, 1200);
+  }
+}
+
+function advanceGame() {
+  gIdx++;
+  // show level-up flash at question 5 (medium) and 9 (hard)
+  if (gIdx===4) flashLevel('רמה 2 – בינונית 💪');
+  else if (gIdx===8) flashLevel('רמה 3 – קשה 🔥');
+  showGameQuestion();
+}
+
+function flashLevel(txt) {
+  const div = document.createElement('div');
+  div.className = 'level-up-flash';
+  div.innerHTML = `<div class="luf-inner">${txt}</div>`;
+  document.body.appendChild(div);
+  setTimeout(()=>div.remove(), 1300);
+}
+
+function endGame(won) {
+  clearInterval(gTimer);
+  showScreen('screen-game');
+  const screen = document.getElementById('screen-game');
+  screen.innerHTML = `
+    <div class="game-over-screen">
+      <div class="game-over-emoji">${won?'🏆':'💔'}</div>
+      <div class="game-over-title">${won?'כל הכבוד!':'אוי, נגמרו החיים…'}</div>
+      <div class="game-over-sub">${won?'סיימת את כל 10 השאלות!':'נסה שוב — אתה יכול!'}</div>
+      <div class="game-over-stats">
+        <div class="game-stat">
+          <div class="game-stat-num">${gCorrect}/${gIdx}</div>
+          <div class="game-stat-label">תשובות נכונות</div>
+        </div>
+        <div class="game-stat">
+          <div class="game-stat-num">${gLives}</div>
+          <div class="game-stat-label">חיים שנשארו</div>
+        </div>
+        <div class="game-stat">
+          <div class="game-stat-num">${Math.round(gCorrect/Math.max(gIdx,1)*100)}%</div>
+          <div class="game-stat-label">אחוז הצלחה</div>
+        </div>
+      </div>
+      <button class="btn-start" onclick="startGame()" style="margin-bottom:12px">שחק שוב 🎮</button>
+      <button class="btn-action btn-outline" onclick="showMode();rebuildGameScreen()" style="margin-top:0">חזור לתפריט</button>
+    </div>`;
+}
+
+function rebuildGameScreen() {
+  // restore the game screen to its original markup for next time
+  document.getElementById('screen-game').innerHTML = `
+  <div class="game-header">
+    <div class="game-lives" id="gameLives"></div>
+    <div class="game-level-badge" id="gameLevelBadge">רמה 1</div>
+    <div style="font-size:13px;color:rgba(255,255,255,.7)" id="gameQNum">1/10</div>
+  </div>
+  <div class="game-timer-wrap">
+    <div class="timer-ring">
+      <svg width="76" height="76" viewBox="0 0 76 76">
+        <circle class="timer-bg" cx="38" cy="38" r="33"/>
+        <circle class="timer-arc" id="timerArc" cx="38" cy="38" r="33"
+          stroke-dasharray="207.3" stroke-dashoffset="0"/>
+      </svg>
+      <div class="timer-num" id="timerNum">30</div>
+    </div>
+  </div>
+  <div class="game-body">
+    <div class="game-q-num" id="gameQLabel"></div>
+    <div class="game-domain-tag"><span id="gameDomainTag"></span></div>
+    <div class="game-question" id="gameQuestion" dir="rtl"></div>
+    <div class="game-opts" id="gameOpts"></div>
+    <div class="game-mini-fb" id="gameMiniF"></div>
+  </div>`;
+}
 </script>
 </body>
 </html>
