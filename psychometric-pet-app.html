@@ -550,7 +550,7 @@ body {
 </div>
 
 <!-- ═══════════ GAME SCREEN ═══════════ -->
-<div id="screen-game" class="screen" style="display:none">
+<div id="screen-game" class="screen">
   <div class="game-header">
     <div class="game-lives" id="gameLives"></div>
     <div class="game-level-badge" id="gameLevelBadge">רמה 1</div>
@@ -1607,7 +1607,135 @@ const SEED=[
   question:"Which statement best describes the significance of the placebo effect, according to the text?",
   options:["It proves that all medical treatments are ineffective.","It demonstrates that patients always prefer natural remedies.","It shows that psychological factors can influence physical health.","It indicates that biochemical treatments are never necessary."],correct:2,
   explanation:"Lines 7–8: 'the mind plays an active role in physical health' — this is the key implication of the placebo effect.",
-  whyWrong:"(1) The text doesn't say treatments are ineffective. (4) The text says the effect 'challenges' but doesn't say biochemical treatments are 'never necessary'.",elim:"Eliminate (1),(4) — both overstate. Eliminate (2) — natural remedies not mentioned."}
+  whyWrong:"(1) The text doesn't say treatments are ineffective. (4) The text says the effect 'challenges' but doesn't say biochemical treatments are 'never necessary'.",elim:"Eliminate (1),(4) — both overstate. Eliminate (2) — natural remedies not mentioned."},
+// ══ EXTRA QUANT L1 ══
+{domain:"quant",subtype:"percent",level:1,topic:"אחוזים",question:"כמה זה 15% מ-200?",options:["25","30","35","20"],correct:1,explanation:"0.15×200=30",steps:"0.15×200=30",whyWrong:"(1) 25=12.5%×200",elim:""},
+{domain:"quant",subtype:"algebra",level:1,topic:"אלגברה",question:"x+9=20. מה x?",options:["10","11","9","12"],correct:1,explanation:"x=20−9=11",steps:"x=11",whyWrong:"(1) 10=20−10",elim:""},
+{domain:"quant",subtype:"geometry",level:1,topic:"גיאומטריה",question:"היקף ריבוע עם צלע 7 ס\"מ?",options:["28","49","21","14"],correct:0,explanation:"4×7=28",steps:"4×7=28",whyWrong:"(2) 49=שטח",elim:""},
+{domain:"quant",subtype:"ratios",level:1,topic:"יחסים",question:"אם 3 תפוחים עולים 9 ש\"ח, כמה עולים 7 תפוחים?",options:["18","21","24","27"],correct:1,explanation:"9÷3=3 ש\"ח לתפוח. 3×7=21",steps:"3×7=21",whyWrong:"(1) 18=3×6",elim:""},
+{domain:"quant",subtype:"wordproblems",level:1,topic:"בעיות מילוליות",question:"דן יש לו 50 ש\"ח. הוא קנה ספר ב-32 ש\"ח. כמה נשאר?",options:["18","22","28","16"],correct:0,explanation:"50−32=18",steps:"50−32=18",whyWrong:"(2) 22=שגיאת חישוב",elim:""},
+{domain:"quant",subtype:"sequences",level:1,topic:"סדרות",question:"הסדרה: 4, 8, 12, 16, ... האיבר הבא?",options:["18","20","22","24"],correct:1,explanation:"d=4. 16+4=20",steps:"16+4=20",whyWrong:"(1) 18=+2 שגוי",elim:""},
+{domain:"quant",subtype:"probability",level:1,topic:"הסתברות",question:"בשק 2 כדורים אדומים ו-3 כחולים. מה הסיכוי לשלוף כדור אדום?",options:["1/2","2/5","3/5","1/3"],correct:1,explanation:"2 מתוך 5 → 2/5",steps:"2/5",whyWrong:"(1) 1/2 — כאילו שווה. (3) 3/5=כחול",elim:""},
+{domain:"quant",subtype:"algebra",level:1,topic:"אלגברה",question:"5y = 45. מה y?",options:["7","8","9","10"],correct:2,explanation:"y=45÷5=9",steps:"45÷5=9",whyWrong:"(1) 7 — 5×7=35≠45",elim:""},
+{domain:"quant",subtype:"geometry",level:1,topic:"גיאומטריה",question:"שטח ריבוע עם צלע 9 ס\"מ?",options:["36","81","72","18"],correct:1,explanation:"9²=81",steps:"9²=81",whyWrong:"(1) 36=6². (3) 72=8×9",elim:""},
+{domain:"quant",subtype:"percent",level:1,topic:"אחוזים",question:"קניתי דבר ב-50 ש\"ח ומכרתי ב-60 ש\"ח. אחוז הרווח?",options:["10%","20%","15%","25%"],correct:1,explanation:"רווח 10. 10/50=20%",steps:"10÷50=0.2=20%",whyWrong:"(1) 10% = 10/100 — לא מהעלות",elim:""},
+// ══ EXTRA QUANT L2 ══
+{domain:"quant",subtype:"algebra",level:2,topic:"אלגברה",question:"(x+3)(x−3) = 0. מה ערכי x?",options:["3 ו-(-3)","0 ו-3","3 בלבד","0 בלבד"],correct:0,explanation:"(x+3)=0→x=−3; (x−3)=0→x=3",steps:"x=±3",whyWrong:"(2) 0 אינו פתרון — בדקו: (0+3)(0−3)=−9≠0",elim:""},
+{domain:"quant",subtype:"sequences",level:2,topic:"סדרות",question:"סדרה הנדסית: 3, 6, 12, 24, ... האיבר ה-6?",options:["48","96","192","72"],correct:1,explanation:"q=2. a₅=48, a₆=96",steps:"3×2⁵=96",whyWrong:"(1) 48=a₅. (3) 192=a₇",elim:""},
+{domain:"quant",subtype:"geometry",level:2,topic:"גיאומטריה",question:"שני ישרים מקבילים נחתכים ע\"י חוצה. זווית אחת 65°. הזווית הסירוגית?",options:["115°","65°","25°","90°"],correct:1,explanation:"זוויות סירוגיות שוות ל-65°",steps:"זוויות סירוגיות=שוות",whyWrong:"(1) 115=משלימה. (3) 25=90−65",elim:""},
+{domain:"quant",subtype:"combinatorics",level:2,topic:"קומבינטוריקה",question:"כמה סידורים שונים של המילה AB AB (4 אותיות: A,A,B,B)?",options:["24","6","12","4"],correct:1,explanation:"4!/(2!×2!)=6",steps:"24/4=6",whyWrong:"(1) 24=4! — ללא חזרות",elim:""},
+{domain:"quant",subtype:"percent",level:2,topic:"אחוזים",question:"מוצר עלה ב-40% ואז ירד ב-40%. מה השינוי הכולל?",options:["אין שינוי","ירד 16%","ירד 4%","ירד 20%"],correct:1,explanation:"1×1.4×0.6=0.84 → ירידה של 16%",steps:"1.4×0.6=0.84 → -16%",whyWrong:"(1) +40−40≠0 כי בסיסים שונים",elim:""},
+{domain:"quant",subtype:"ratios",level:2,topic:"יחסים",question:"מהירות ממוצעת של 60 קמ\"ש ל-2.5 שעות. כמה ק\"מ?",options:["120","150","180","125"],correct:1,explanation:"60×2.5=150",steps:"60×2.5=150",whyWrong:"(1) 120=60×2. (3) 180=60×3",elim:""},
+{domain:"quant",subtype:"probability",level:2,topic:"הסתברות",question:"מטבע הוגן מוטל 3 פעמים. סיכוי לקבל 3 עצות?",options:["1/4","1/6","1/8","3/8"],correct:2,explanation:"(1/2)³=1/8",steps:"1/2×1/2×1/2=1/8",whyWrong:"(1) 1/4=(1/2)². (4) 3/8=P(בדיוק 2 עצות)",elim:""},
+{domain:"quant",subtype:"wordproblems",level:2,topic:"בעיות מילוליות",question:"נר דולק 6 שעות. לאחר 1.5 שעות, כמה אחוז נשרף?",options:["20%","25%","30%","15%"],correct:1,explanation:"1.5/6=0.25=25%",steps:"1.5÷6=25%",whyWrong:"(1) 20%=1.2/6",elim:""},
+{domain:"quant",subtype:"algebra",level:2,topic:"אלגברה",question:"אם a=3 ו-b=−2, כמה a²−b²?",options:["5","13","1","−5"],correct:0,explanation:"9−4=5",steps:"3²−(−2)²=9−4=5",whyWrong:"(2) 13=a²+b². (3) 1=(a−b)²−... שגוי",elim:""},
+{domain:"quant",subtype:"geometry",level:2,topic:"גיאומטריה",question:"מעגל עם היקף 31.4 ס\"מ. מה שטחו? (π≈3.14)",options:["78.5","50","31.4","100"],correct:0,explanation:"C=2πr→r=5. A=πr²=78.5",steps:"r=5; 3.14×25=78.5",whyWrong:"(2) 50=πr (לא r²). (4) 100=4r²",elim:""},
+// ══ EXTRA QUANT L3 ══
+{domain:"quant",subtype:"algebra",level:3,topic:"אלגברה",question:"√(x+5)=4. מה x?",options:["11","9","16","3"],correct:0,explanation:"x+5=16→x=11",steps:"4²=16; x=16−5=11",whyWrong:"(2) 9=4²−7. (3) 16=4² ללא -5",elim:""},
+{domain:"quant",subtype:"sequences",level:3,topic:"סדרות",question:"סכום 15 האיברים הראשונים של הסדרה 1,3,5,...?",options:["225","210","196","169"],correct:0,explanation:"Sₙ=n². S₁₅=225",steps:"n²=15²=225",whyWrong:"(2) 210=15×14",elim:""},
+{domain:"quant",subtype:"probability",level:3,topic:"הסתברות",question:"מגרסה מכילה 5 כרטיסיות (1–5). שולפים 2 ברצף ללא החזרה. P(סכום=6)?",options:["1/5","2/5","3/10","1/4"],correct:0,explanation:"זוגות שסכומם 6: (1,5),(2,4),(4,2),(5,1)=4. סה\"כ P(5,2)=20. 4/20=1/5",steps:"זוגות: (1,5)(5,1)(2,4)(4,2)→4/20=1/5",whyWrong:"(3) 3/10=3 זוגות שגויים",elim:""},
+{domain:"quant",subtype:"geometry",level:3,topic:"גיאומטריה",question:"משולש ישר-זווית עם יתר 13 ורגל 5. מה שטחו?",options:["30","32.5","60","26"],correct:0,explanation:"רגל₂=√(169−25)=12. שטח=½×5×12=30",steps:"√(13²−5²)=12; ½×5×12=30",whyWrong:"(3) 60=5×12 ללא ½",elim:""},
+{domain:"quant",subtype:"combinatorics",level:3,topic:"קומבינטוריקה",question:"כמה מספרים בני 4 ספרות אפשר לבנות מ-{1,2,3,4} ללא חזרה, שמתחלקים ב-2?",options:["12","8","6","16"],correct:0,explanation:"ספרה אחרונה 2 או 4 (2 אפשרויות). שאר 3 ספרות: P(3,3)=6. 2×6=12",steps:"2×3!=12",whyWrong:"(2) 8=2⁴ מינוס שגויים. (4) 16=P(4,4)÷1.5 שגוי",elim:""},
+// ══ EXTRA VERBAL L1 ══
+{domain:"verbal",subtype:"analogy",level:1,topic:"אנלוגיות",question:"**רופא : חולה**\n\nמצאו את הזוג שהיחס דומה.",options:["מורה : תלמיד","שוטר : עצור","אבא : ילד","נהג : מכונית"],correct:0,explanation:"רופא מטפל בחולה. מורה מלמד תלמיד. נותן שירות : מקבל שירות.",whyWrong:"(2) שוטר+עצור=כוח, לא שירות",elim:""},
+{domain:"verbal",subtype:"analogy",level:1,topic:"אנלוגיות",question:"**חם : קר**\n\nמצאו את הזוג שהיחס דומה.",options:["רע : רע","גדול : ענק","מהיר : איטי","חזק : אמיץ"],correct:2,explanation:"חם ↔ קר: ניגודים. מהיר ↔ איטי: ניגודים.",whyWrong:"(4) חזק+אמיץ=נרדפים",elim:""},
+{domain:"verbal",subtype:"fill",level:1,topic:"השלמת חסר",question:"הוא ____________ את השאלה בזהירות לפני שענה.",options:["התעלם מ","קרא","שמר","הסתיר"],correct:1,explanation:"'לפני שענה' — קרא את השאלה תחילה.",whyWrong:"(1) 'התעלם' סותר 'ענה'",elim:""},
+{domain:"verbal",subtype:"inference",level:1,topic:"הבנה והסקה",question:"\"המסעדה הזאת תמיד מלאה\"\n\nמה ניתן להסיק?",options:["האוכל טעים","המחירים נמוכים","המסעדה פופולרית","השירות מצוין"],correct:2,explanation:"'תמיד מלאה' = פופולרית. הסיבה אינה ידועה.",whyWrong:"(1),(2),(4) — הסיבות אפשריות אך אינן ודאיות",elim:""},
+{domain:"verbal",subtype:"analogy",level:1,topic:"אנלוגיות",question:"**שחייה : מים**\n\nמצאו את הזוג שהיחס דומה.",options:["ריצה : נעליים","טיסה : אוויר","שירה : קול","בישול : אש"],correct:1,explanation:"שחייה מתרחשת במים. טיסה מתרחשת באוויר. פעולה : הסביבה שבה היא מתרחשת.",whyWrong:"(1) נעליים = כלי, לא סביבה",elim:""},
+// ══ EXTRA VERBAL L2 ══
+{domain:"verbal",subtype:"fill",level:2,topic:"השלמת חסר",question:"הפרויקט נכשל לא בגלל חוסר כישרון אלא בגלל ____________ בין חברי הצוות.",options:["שיתוף פעולה מצוין","חוסר תקשורת","מנהיגות חזקה","מחויבות גבוהה"],correct:1,explanation:"'נכשל' + 'לא... אלא' = סיבה שלילית = חוסר תקשורת",whyWrong:"(1),(3),(4) — חיוביים, לא מסבירים כישלון",elim:""},
+{domain:"verbal",subtype:"inference",level:2,topic:"הבנה והסקה",question:"\"כל הנבחנים שהכינו את עצמם עברו. מיכל לא עברה.\"\n\nמה ניתן להסיק?",options:["מיכל לא חכמה","מיכל לא הכינה את עצמה","הבחינה הייתה קשה","מיכל לא ניגשה לבחינה"],correct:1,explanation:"לוגיקה: כל מי שהכין → עבר. מיכל לא עברה → מיכל לא הכינה.",whyWrong:"(3),(4) — אפשריים אך לא הסיקו מהנתונים",elim:""},
+{domain:"verbal",subtype:"analogy",level:2,topic:"אנלוגיות",question:"**אמנות : יופי**\n\nמצאו את הזוג שהיחס דומה.",options:["מדע : אמת","ספורט : כסף","מוזיקה : קצב","ריקוד : תנועה"],correct:0,explanation:"אמנות שואפת ליופי; מדע שואף לאמת. תחום : ערכו המרכזי.",whyWrong:"(3) קצב = רכיב, לא ערך מרכזי",elim:""},
+{domain:"verbal",subtype:"fill",level:2,topic:"השלמת חסר",question:"החוקרת הציגה ממצאים ____________ שאף אחד לא ציפה להם, ושינו לחלוטין את הבנת התחום.",options:["צפויים","מהפכניים","שגרתיים","מאכזבים"],correct:1,explanation:"'אף אחד לא ציפה' + 'שינו לחלוטין' = מהפכניים",whyWrong:"(1),(3) — ניגוד ל'לא ציפו'",elim:""},
+{domain:"verbal",subtype:"inference",level:2,topic:"הבנה והסקה",question:"רן: \"אם תתאמן כל יום, תהיה ספורטאי מצוין.\"\nתמר: \"אבל גם כישרון טבעי חשוב.\"\n\nמה תמר טוענת?",options:["אימון אינו חשוב","כישרון מספיק לבד","אימון לבד אינו ערובה להצלחה","כדאי להפסיק לאמן"],correct:2,explanation:"תמר מוסיפה גורם (כישרון) — כלומר אימון לבד לא מספיק.",whyWrong:"(1) היא לא ביטלה אימון. (4) לא הוצע",elim:""},
+// ══ EXTRA VERBAL L3 ══
+{domain:"verbal",subtype:"analogy",level:3,topic:"אנלוגיות",question:"**שתיקה : הסכמה**\n\nמצאו את הזוג שהיחס דומה.",options:["מחאה : אישור","עיוורון : אדישות","חיוך : שמחה","היעדרות : נוכחות"],correct:1,explanation:"שתיקה מתפרשת לעיתים כהסכמה (גם אם לא כוונה). עיוורון לעיתים מתפרש כאדישות.",whyWrong:"(3) חיוך+שמחה = ביטוי+רגש, לא פרשנות שגויה",elim:""},
+{domain:"verbal",subtype:"inference",level:3,topic:"הבנה והסקה",question:"\"מדינות שהשקיעו בחינוך רשמו צמיחה כלכלית גבוהה יותר. לכן חינוך גורם לצמיחה.\"\n\nמה הטעות בטיעון?",options:["חינוך לא קשור לצמיחה","קשר סטטיסטי אינו ראיה לקשר סיבתי","הנתונים שגויים","יש להשקיע יותר בכלכלה"],correct:1,explanation:"'מתאם ≠ סיבתיות' — ייתכן שמדינות עשירות יותר משקיעות בחינוך וגם צומחות.",whyWrong:"(1) הטיעון לא כפר בקשר. (3),(4) לא מה שנטען",elim:""},
+{domain:"verbal",subtype:"fill",level:3,topic:"השלמת חסר",question:"הסכם השלום נראה ____________ על הנייר, אך המציאות בשטח הוכיחה שיישומו כרוך בקשיים עצומים.",options:["בלתי אפשרי","מציאותי ומעשי","מפוקפק","בלתי מוסרי"],correct:1,explanation:"'על הנייר' vs. 'בשטח' = נראה טוב בתיאוריה ('מציאותי') אך קשה ביישום.",whyWrong:"(1),(3) — אם היה 'בלתי אפשרי' לא היו חותמים עליו",elim:""},
+// ══ EXTRA ENGLISH L1 ══
+{domain:"english",subtype:"sentence_completion",level:1,topic:"Sentence Completion",isEnglish:true,
+  question:"The weather was so ____ that we decided to stay indoors all day.",
+  options:["pleasant","terrible","unpredictable","mild"],correct:1,
+  explanation:"Staying indoors 'all day' implies bad weather = terrible.",
+  whyWrong:"Pleasant/mild weather would lead to going outside.",elim:"Eliminate (1),(4) — positive weather → go outside."},
+{domain:"english",subtype:"sentence_completion",level:1,topic:"Sentence Completion",isEnglish:true,
+  question:"She spoke so ____ that everyone in the back row could hear her clearly.",
+  options:["quietly","quickly","loudly","slowly"],correct:2,
+  explanation:"If back-row people heard clearly, she spoke loudly.",
+  whyWrong:"(1) quietly — back row wouldn't hear.",elim:"Eliminate (1) — contradicts 'everyone heard'."},
+{domain:"english",subtype:"restatement",level:1,topic:"Restatements",isEnglish:true,
+  question:"Original: He finished the test before anyone else.\n\nWhich restatement is correct?",
+  options:["He was the last to finish.","He completed the test faster than the other students.","He did not finish the test.","He finished at the same time as the others."],correct:1,
+  explanation:"'Before anyone else' = faster than everyone = completed faster than other students.",
+  whyWrong:"(1),(3),(4) — all contradict 'before anyone else'.",elim:"Eliminate (1),(3),(4)."},
+{domain:"english",subtype:"sentence_completion",level:1,topic:"Sentence Completion",isEnglish:true,
+  question:"The instructions were very ____; even a young child could follow them.",
+  options:["complicated","confusing","simple","lengthy"],correct:2,
+  explanation:"'Even a young child could follow' = simple/easy.",
+  whyWrong:"(1),(2) — children couldn't follow complicated/confusing instructions.",elim:"Eliminate (1),(2),(4) — all contradict ease of following."},
+{domain:"english",subtype:"restatement",level:1,topic:"Restatements",isEnglish:true,
+  question:"Original: The store is open every day except Sunday.\n\nWhich restatement is correct?",
+  options:["The store is open on Sundays only.","The store is never open.","The store is closed on Sundays.","The store is open seven days a week."],correct:2,
+  explanation:"'Open every day except Sunday' = closed on Sunday.",
+  whyWrong:"(1),(4) — contradict 'except Sunday'. (2) — too extreme.",elim:"Eliminate (1),(2),(4)."},
+// ══ EXTRA ENGLISH L2 ══
+{domain:"english",subtype:"sentence_completion",level:2,topic:"Sentence Completion",isEnglish:true,
+  question:"The judge's verdict was seen as ____, since she had accepted gifts from one of the parties involved in the case.",
+  options:["impartial","biased","lenient","firm"],correct:1,
+  explanation:"Accepting gifts from a party = conflict of interest = biased.",
+  whyWrong:"(1) impartial = fair = the opposite of the situation.",elim:"Eliminate (1) — directly contradicted. Eliminate (3),(4) — not implied."},
+{domain:"english",subtype:"restatement",level:2,topic:"Restatements",isEnglish:true,
+  question:"Original: The results of the study were largely consistent with previous research.\n\nWhich restatement is most accurate?",
+  options:["The study contradicted all prior research.","The study's findings mostly agreed with earlier studies.","Previous research was proven to be wrong.","The study was the first of its kind."],correct:1,
+  explanation:"'Largely consistent with previous research' = mostly agreed with earlier studies.",
+  whyWrong:"(1),(3) — contradict 'consistent'. (4) — not implied.",elim:"Eliminate (1),(3) — direct contradictions."},
+{domain:"english",subtype:"sentence_completion",level:2,topic:"Sentence Completion",isEnglish:true,
+  question:"Unlike her outgoing sister, Maya was naturally ____, preferring small gatherings to large parties.",
+  options:["extroverted","introverted","ambitious","confident"],correct:1,
+  explanation:"Contrast with 'outgoing' + prefers small gatherings = introverted.",
+  whyWrong:"(1) extroverted = same as outgoing = no contrast.",elim:"Eliminate (1) — no contrast with 'outgoing'."},
+{domain:"english",subtype:"reading",level:2,topic:"Reading Comprehension",isEnglish:true,
+  passage:`Text: Urban Green Spaces
+
+(1) Research consistently shows that access to green spaces — parks, gardens, and
+(2) tree-lined streets — has measurable benefits for urban residents. People living near
+(3) parks report lower stress levels and better mental health outcomes than those who do
+(4) not. Additionally, green spaces reduce the 'urban heat island' effect by providing
+(5) shade and absorbing heat. Despite these benefits, urban green spaces are often the
+(6) first areas to be sacrificed when cities need land for development.`,
+  question:"According to the text, why are green spaces often removed during urban development?",
+  options:["They are too expensive to maintain.","They are unpopular with residents.","Cities prioritize land for development over green areas.","They do not provide enough benefit to justify the space."],correct:2,
+  explanation:"Line 5-6: green spaces are 'the first areas to be sacrificed when cities need land for development.'",
+  whyWrong:"(1),(2),(4) — none of these reasons are given in the text.",elim:"Eliminate (1),(2),(4) — not stated."},
+{domain:"english",subtype:"restatement",level:2,topic:"Restatements",isEnglish:true,
+  question:"Original: The proposal was rejected by a narrow margin.\n\nWhich restatement is most accurate?",
+  options:["The proposal failed by a large majority.","Almost everyone supported the proposal.","The vote against the proposal was close.","The proposal was accepted with minor revisions."],correct:2,
+  explanation:"'Rejected by a narrow margin' = the vote was close, but it did not pass.",
+  whyWrong:"(1) 'large majority' contradicts 'narrow'. (4) it was rejected, not accepted.",elim:"Eliminate (1) — 'large' contradicts 'narrow'. Eliminate (4) — rejected ≠ accepted."},
+// ══ EXTRA ENGLISH L3 ══
+{domain:"english",subtype:"sentence_completion",level:3,topic:"Sentence Completion",isEnglish:true,
+  question:"The politician's speech was ____, appealing to emotions rather than presenting factual evidence to support his claims.",
+  options:["empirical","demagogic","analytical","pragmatic"],correct:1,
+  explanation:"Appealing to emotions over facts = demagogic (manipulative rhetoric).",
+  whyWrong:"(1) empirical = based on evidence = opposite. (3) analytical = logical.",elim:"Eliminate (1),(3),(4) — all imply reason over emotion."},
+{domain:"english",subtype:"reading",level:3,topic:"Reading Comprehension",isEnglish:true,
+  passage:`Text: Urban Green Spaces
+
+(1) Research consistently shows that access to green spaces — parks, gardens, and
+(2) tree-lined streets — has measurable benefits for urban residents. People living near
+(3) parks report lower stress levels and better mental health outcomes than those who do
+(4) not. Additionally, green spaces reduce the 'urban heat island' effect by providing
+(5) shade and absorbing heat. Despite these benefits, urban green spaces are often the
+(6) first areas to be sacrificed when cities need land for development.`,
+  question:"The word 'sacrificed' (line 6) is used to suggest that:",
+  options:["Green spaces are deliberately harmed despite their value.","Green spaces are donated to charity.","Urban development has no alternative.","Residents are unaware of the benefits of green spaces."],correct:0,
+  explanation:"'Sacrificed' implies giving up something valuable — the word choice emphasizes the loss, not just neutral removal.",
+  whyWrong:"(2),(3),(4) — not implied by 'sacrificed'. The word signals regret.",elim:"Eliminate (2),(3),(4) — all miss the connotation of 'sacrificed'."},
+{domain:"english",subtype:"restatement",level:3,topic:"Restatements",isEnglish:true,
+  question:"Original: The success of the campaign owed as much to timing as to content.\n\nWhich restatement is most accurate?",
+  options:["Content was the main factor in the campaign's success.","The campaign succeeded primarily due to good timing.","Both the timing and content of the campaign contributed equally to its success.","The campaign would have succeeded regardless of timing."],correct:2,
+  explanation:"'As much to timing as to content' = both contributed equally.",
+  whyWrong:"(1),(2) — both single out one factor while the original credits both equally.",elim:"Eliminate (1),(2) — single-factor; (4) contradicts 'timing mattered'."}
 ];
 
 // ════════════════════════════════════════
@@ -1924,6 +2052,7 @@ function startGame() {
   gIdx     = 0;
   gCorrect = 0;
   gQueue   = buildGameQueue();
+  rebuildGameScreen();
   showScreen('screen-game');
   showGameQuestion();
 }
